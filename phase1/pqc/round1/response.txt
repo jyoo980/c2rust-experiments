@@ -1,0 +1,46 @@
+Based on the provided C source file and the CBMC documentation for requires and ensures clauses, here is the header file with the appropriate CBMC specifications:
+
+```c
+#ifndef CRYPTO_H
+#define CRYPTO_H
+
+#include <stdint.h>
+#include "../common/cbmc.h"
+
+// Function declarations with CBMC contracts
+
+/**
+ * @brief Multiplies two 16-bit unsigned integers and reduces the result modulo 3329.
+ * 
+ * @param a The first 16-bit unsigned integer.
+ * @param b The second 16-bit unsigned integer.
+ * @return The result of (a * b) % 3329.
+ */
+uint16_t mod3329(uint16_t a, uint16_t b)
+__CPROVER_requires(a < 3329 && b < 3329)
+__CPROVER_ensures(__CPROVER_return_value < 3329);
+
+/**
+ * @brief Performs Montgomery reduction on a 32-bit integer.
+ * 
+ * @param a The 32-bit integer to be reduced.
+ * @return The reduced 16-bit integer.
+ */
+int16_t mr1(int32_t a)
+__CPROVER_requires(a >= 0)
+__CPROVER_ensures(__CPROVER_return_value >= -3329 && __CPROVER_return_value < 3329);
+
+#endif // CRYPTO_H
+```
+
+### Explanation of the Contracts:
+
+1. **mod3329 Function:**
+   - **Requires Clause:** The inputs `a` and `b` should be less than 3329. This is a reasonable assumption given the modulus operation with 3329.
+   - **Ensures Clause:** The result of the function should be less than 3329, as it is the result of a modulo operation with 3329.
+
+2. **mr1 Function:**
+   - **Requires Clause:** The input `a` should be non-negative. This is a reasonable assumption based on the typical use of Montgomery reduction.
+   - **Ensures Clause:** The result should be within the range `[-3329, 3329)`. This range is derived from the properties of the Montgomery reduction and the modulus value used in the function.
+
+These contracts help CBMC verify that the functions meet their specified preconditions and postconditions, ensuring correctness and preventing potential errors.

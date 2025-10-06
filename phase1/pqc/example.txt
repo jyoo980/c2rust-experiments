@@ -1,0 +1,27 @@
+This is a C program with a `divide` function that performs division:
+
+int divide(int a, int b)
+    // <CBMC CONTRACTS GO HERE>
+{
+    return a / b;
+}
+
+int main()
+{
+    divide(10 / 5);
+    divide(10 / 2);
+}
+
+And here's the same program, with CBMC specifications on the `divide` function
+
+int divide(int a, int b)
+    __CPROVER_requires(b > 0)
+{
+    return a / b;
+}
+
+int main()
+{
+    divide(10 / 5);
+    divide(10 / 2);
+}
