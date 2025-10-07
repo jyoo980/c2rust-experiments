@@ -1,0 +1,5 @@
+I ran into a similar issue with the model response not including a definition for `Q`,
+    which made verification immediately fail.
+However,
+    I manually inserted a definition for `Q` and ran verification again,
+    which passed.
